@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Ameria Voice Widget</title>
+  <title>Ask Ameria</title>
 
   <style>
     body {
@@ -16,6 +16,7 @@
       justify-content: flex-start;
       padding-top: 40px;
       text-align: center;
+      min-height: 100vh;
     }
 
     .ameria-image {
@@ -40,74 +41,71 @@
       max-width: 520px;
       color: #7a6145;
     }
-
-    .ameria-button {
-      background-color: #00bfa6;
-      padding: 16px 32px;
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-size: 18px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-top: 24px;
-    }
-
-    .ameria-button:hover {
-      background-color: #009783;
-    }
-
-    .widget-container {
-      width: 100%;
-      max-width: 520px;
-      margin-top: 30px;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- Ameria image -->
+  <!-- Ameria portrait -->
   <img src="Ameria-AISupport.png" alt="Ameria" class="ameria-image" />
 
-  <!-- Heading and description -->
+  <!-- Title and description -->
   <div class="ameria-title">Ask Ameria</div>
   <div class="ameria-subtitle">
-    Press the button below to start a voice session with Ameria. 
-    Speak your questions and she will respond in real time.
+    Tap the Ask Ameria button on the bottom of the screen to start a voice session.
   </div>
 
-  <!-- Ask Ameria button -->
-  <button class="ameria-button" onclick="startAmeria()">
-    Ask Ameria
-  </button>
-
-  <!-- Inline widget mount point -->
-  <div class="widget-container" id="ameriaWidget"></div>
-
-  <!-- Vapi widget script -->
-  <script 
-    src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
-    async
-    type="text/javascript">
-  </script>
-
-  <!-- Init Ameria when button is pressed -->
+  <!-- Vapi voice widget snippet -->
   <script>
-    function startAmeria() {
-      const container = document.getElementById("ameriaWidget");
+    var vapiInstance = null;
+    const assistant = "d9b6fb13-d025-4b15-9bdc-ae373cfdddc3"; // Ameria assistant
+    const apiKey = "9d1b0b9c-1ceb-43a0-9ba2-35c01e6b09ae";    // Your public key
 
-      container.innerHTML = `
-        <vapi-widget
-          public-key="9d1b0b9c-1ceb-43a0-9ba2-35c01e6b09ae"
-          assistant-id="d9b6fb13-d025-4b15-9bdc-ae373cfdddc3"
-          mode="voice"
-          size="full"
-          start-button-text="Start"
-          end-button-text="End"
-        ></vapi-widget>
-      `;
-    }
+    const buttonConfig = {
+      position: "bottom",    // bottom center
+      offset: "32px",
+      width: "260px",
+      height: "56px",
+      idle: {
+        color: "rgb(0, 191, 166)",
+        type: "pill",
+        title: "Ask Ameria",
+        subtitle: "Tap to start a voice session",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/mic.svg"
+      },
+      loading: {
+        color: "rgb(93, 124, 202)",
+        type: "pill",
+        title: "Connecting",
+        subtitle: "Please wait",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg"
+      },
+      active: {
+        color: "rgb(255, 92, 92)",
+        type: "pill",
+        title: "Ameria is listening",
+        subtitle: "Tap to end session",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg"
+      }
+    };
+
+    (function (d, t) {
+      var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+      g.src =
+        "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+
+      g.onload = function () {
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig
+        });
+      };
+    })(document, "script");
   </script>
 
 </body>
