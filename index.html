@@ -3,23 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ameria Voice Widget</title>
-</head>
-<body style="margin:0; padding:20px; font-family:sans-serif;">
 
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #f7f0e8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      text-align: center;
+    }
+
+    .ameria-image {
+      width: 260px;
+      height: 260px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      border: 3px solid #e2c08a;
+    }
+
+    .ameria-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-top: 20px;
+      color: #5c4630;
+    }
+
+    .ameria-subtitle {
+      font-size: 16px;
+      margin-top: 8px;
+      max-width: 520px;
+      color: #7a6145;
+    }
+
+    .ameria-button {
+      background-color: #00bfa6;
+      padding: 16px 32px;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 24px;
+    }
+
+    .ameria-button:hover {
+      background-color: #009783;
+    }
+
+    .widget-container {
+      width: 100%;
+      max-width: 520px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Ameria image -->
+  <img src="ameria-AISupport.png" alt="Ameria" class="ameria-image" />
+
+  <!-- Heading and description -->
+  <div class="ameria-title">Ask Ameria</div>
+  <div class="ameria-subtitle">
+    Press the button below to start a voice session with Ameria. 
+    Speak your questions and she will respond in real time.
+  </div>
+
+  <!-- Ask Ameria button -->
+  <button class="ameria-button" onclick="startAmeria()">
+    Ask Ameria
+  </button>
+
+  <!-- Inline widget mount point -->
+  <div class="widget-container" id="ameriaWidget"></div>
+
+  <!-- Vapi widget script -->
   <script 
     src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
     async
     type="text/javascript">
   </script>
 
-  <vapi-widget
-    public-key="9d1b0b9c-1ceb-43a0-9ba2-35c01e6b09ae"
-    assistant-id="d9b6fb13-d025-4b15-9bdc-ae373cfdddc3"
-    mode="voice"
-    size="compact"
-    start-button-text="Start Voice Chat"
-    end-button-text="End Call"
-  ></vapi-widget>
+  <!-- Init Ameria when button is pressed -->
+  <script>
+    function startAmeria() {
+      const container = document.getElementById("ameriaWidget");
+
+      container.innerHTML = `
+        <vapi-widget
+          public-key="9d1b0b9c-1ceb-43a0-9ba2-35c01e6b09ae"
+          assistant-id="d9b6fb13-d025-4b15-9bdc-ae373cfdddc3"
+          mode="voice"
+          size="full"
+          start-button-text="Start"
+          end-button-text="End"
+        ></vapi-widget>
+      `;
+    }
+  </script>
 
 </body>
 </html>
